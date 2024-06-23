@@ -1,5 +1,5 @@
 import { Page } from "puppeteer";
-import { SimulateDto, UserDto } from "../dto";
+import { SimulationDto, UserDto } from "../dto";
 
 export class AlcifPage {
   private page: Page;
@@ -52,7 +52,7 @@ export class AlcifPage {
     });
   }
 
-  async simulateProposal(client: SimulateDto) {
+  async simulateProposal(client: SimulationDto) {
     await this.page.goto(`${this.baseUrl}/admin/Portabilidade`, {
       waitUntil: "networkidle2",
     });
