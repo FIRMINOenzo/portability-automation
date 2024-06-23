@@ -1,4 +1,4 @@
-import { Page } from "puppeteer";
+import { ElementHandle, Page } from "puppeteer";
 import { SimulationDto, UserDto } from "../dto";
 
 export class AlcifPage {
@@ -38,6 +38,19 @@ export class AlcifPage {
         element.dispatchEvent(changeEvent);
       }
     }, selector);
+  }
+
+  private async findButtonByText(text: string): Promise<ElementHandle | null> {
+    const buttons = await this.page.$$("button");
+
+    for (let button of buttons) {
+      let buttonText = await this.page.evaluate((el) => el.textContent, button);
+      if (buttonText?.includes(text)) {
+        return button;
+      }
+    }
+
+    return null;
   }
 
   async login(user: UserDto) {
@@ -81,16 +94,7 @@ export class AlcifPage {
       body?.click();
     });
 
-    const buttons = await this.page.$$("button");
-    let buttonAdvance;
-
-    for (let button of buttons) {
-      let buttonText = await this.page.evaluate((el) => el.textContent, button);
-      if (buttonText?.includes("Avançar")) {
-        buttonAdvance = button;
-        break;
-      }
-    }
+    const buttonAdvance = await this.findButtonByText("Avançar");
 
     if (buttonAdvance) {
       await buttonAdvance.click();
