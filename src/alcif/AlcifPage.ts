@@ -15,7 +15,7 @@ export class AlcifPage {
     return new Promise<void>((resolve) => {
       setTimeout(() => {
         resolve();
-      }, Math.floor(Math.random() * 4000) + 1000);
+      }, Math.floor(Math.random() * 5000) + 1000);
     });
   }
 
@@ -54,7 +54,9 @@ export class AlcifPage {
   }
 
   async login(user: UserDto) {
-    await this.page.goto(`${this.baseUrl}/login`);
+    await this.page.goto(`${this.baseUrl}/login`, {
+      waitUntil: "networkidle2",
+    });
     await this.page.type("#email", user.email);
     await this.page.type("#password", user.password);
 
@@ -68,6 +70,11 @@ export class AlcifPage {
   async simulateProposal(client: SimulationDto) {
     await this.page.goto(`${this.baseUrl}/admin/Portabilidade`, {
       waitUntil: "networkidle2",
+    });
+
+    await this.page.evaluate(() => {
+      const body = document.querySelector("body");
+      body?.click();
     });
 
     await this.typeWithEffects("#cpf", client.cpf);
@@ -86,6 +93,7 @@ export class AlcifPage {
     await this.page.click(".css-13cymwt-control");
     await this.page.waitForSelector(".css-19bb58m");
     await this.typeWithEffects("#react-select-3-input", "Banco BS2 S.A.");
+    await this.waitRandomTime();
     await this.page.keyboard.press("Enter");
     // Wait a certain amount of time and click out of the input
     await this.waitRandomTime();
@@ -94,10 +102,22 @@ export class AlcifPage {
       body?.click();
     });
 
-    const buttonAdvance = await this.findButtonByText("Avançar");
+    const advanceButton = await this.findButtonByText("Avançar");
 
-    if (buttonAdvance) {
-      await buttonAdvance.click();
+    if (advanceButton) {
+      await advanceButton.click();
+    } else {
+      console.error("Botão 'Avançar' não encontrado");
+    }
+  }
+
+  async confirmSilumation() {
+    // Wait for the spinner to disappear
+    await this.page.waitForSelector(".spinner-border", { hidden: true });
+
+    const advanceButton = await this.findButtonByText("Avançar");
+    if (advanceButton) {
+      await advanceButton.click();
     } else {
       console.error("Botão 'Avançar' não encontrado");
     }

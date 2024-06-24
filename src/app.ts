@@ -27,6 +27,7 @@ async function run() {
   );
 
   await alcifPage.simulateProposal(simulation);
+  await alcifPage.confirmSilumation();
 }
 
 run();
