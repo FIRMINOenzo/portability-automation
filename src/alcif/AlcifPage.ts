@@ -1,4 +1,4 @@
-import { Page } from "puppeteer";
+import { ElementHandle, Page } from "puppeteer";
 import { PersonalDataDto, SimulationDto, UserDto } from "../dto";
 
 export class AlcifPage {
@@ -40,17 +40,26 @@ export class AlcifPage {
     }, selector);
   }
 
-  private async clickButtonByText(text: string): Promise<void> {
+  private async findButtonByText(text: string): Promise<ElementHandle | null> {
     const buttons = await this.page.$$("button");
 
     for (let button of buttons) {
       let buttonText = await this.page.evaluate((el) => el.textContent, button);
       if (buttonText?.includes(text)) {
-        button.click();
+        return button;
       }
     }
 
-    console.error(`Botão '${text}' não encontrado`);
+    return null;
+  }
+
+  private async clickButtonByText(text: string) {
+    const button = await this.findButtonByText(text);
+    if (button) {
+      await button.click();
+    } else {
+      console.error(`Botão '${text}' não encontrado`);
+    }
   }
 
   private async selectOption(selector: string, value: string): Promise<void> {
