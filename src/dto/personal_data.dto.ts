@@ -27,20 +27,20 @@ export class PersonalDataDto {
     this.name = name;
     this.maritalStatus = maritalStatus;
     this.sex = sex;
-    this.birthDate = birthDate;
+    this.birthDate = PersonalDataDto.formatBirthDate(birthDate);
     this.birthState = birthState;
     this.birthCity = birthCity;
     this.registration = registration;
     this.motherName = motherName;
     this.pensionerRegistration = pensionerRegistration;
-    this.grossIncome = grossIncome;
+    this.grossIncome = PersonalDataDto.formatGrossIncome(grossIncome);
   }
 
-  static formatBirthDate(birthDate: string): string {
+  private static formatBirthDate(birthDate: string): string {
     return birthDate.replace(/\D/g, "").substring(0, 8);
   }
 
-  static formatGrossIncome(grossIncome: string): string {
+  private static formatGrossIncome(grossIncome: string): string {
     return grossIncome.replace(/\D/g, "");
   }
 }
