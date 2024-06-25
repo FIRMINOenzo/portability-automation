@@ -1,0 +1,8 @@
+export enum MaritalStatus {
+  SINGLE = "SOLTEIRO",
+  MARRIED = "CASADO",
+  DIVORCED = "DIVORCIADO",
+  WIDOWED = "VIUVO",
+  STABLE_UNION = "UNITAO",
+  OTHERS = "OUTROS",
+}

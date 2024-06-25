@@ -2,8 +2,9 @@ import puppeteer, { Browser, Page } from "puppeteer";
 import inquirer from "inquirer";
 
 import { AlcifPage } from "./alcif";
-import { SimulationDto, UserDto } from "./dto";
+import { PersonalDataDto, SimulationDto, UserDto } from "./dto";
 import { env } from "./shared/env";
+import { MaritalStatus, Sex, State } from "./enums";
 
 async function run() {
   const browser: Browser = await puppeteer.launch({
@@ -28,6 +29,21 @@ async function run() {
 
   await alcifPage.simulateProposal(simulation);
   await alcifPage.confirmSilumation();
+
+  const personalData = new PersonalDataDto(
+    "Jonas Abreu da Silva",
+    MaritalStatus.SINGLE,
+    Sex.MALE,
+    "01/01/1990",
+    State.SAO_PAULO,
+    "Bragança Paulista",
+    "123456789",
+    "Maria Abreu da Silva",
+    "987654321",
+    "350000"
+  );
+
+  await alcifPage.fillInPersonalData(personalData);
 }
 
 run();

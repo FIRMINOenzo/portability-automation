@@ -1,5 +1,5 @@
-import { ElementHandle, Page } from "puppeteer";
-import { SimulationDto, UserDto } from "../dto";
+import { Page } from "puppeteer";
+import { PersonalDataDto, SimulationDto, UserDto } from "../dto";
 
 export class AlcifPage {
   private page: Page;
@@ -40,17 +40,43 @@ export class AlcifPage {
     }, selector);
   }
 
-  private async findButtonByText(text: string): Promise<ElementHandle | null> {
+  private async clickButtonByText(text: string): Promise<void> {
     const buttons = await this.page.$$("button");
 
     for (let button of buttons) {
       let buttonText = await this.page.evaluate((el) => el.textContent, button);
       if (buttonText?.includes(text)) {
-        return button;
+        button.click();
       }
     }
 
-    return null;
+    console.error(`Botão '${text}' não encontrado`);
+  }
+
+  private async selectOption(selector: string, value: string): Promise<void> {
+    await this.page.waitForSelector(selector);
+    const exists = await this.page.evaluate(
+      (selector, value) => {
+        const selectElement = document.querySelector(
+          selector
+        ) as HTMLSelectElement;
+        if (selectElement) {
+          return Array.from(selectElement.options).some(
+            (option) => option.value === value || option.text === value
+          );
+        }
+        return false;
+      },
+      selector,
+      value
+    );
+
+    if (exists) {
+      await this.page.select(selector, value);
+      console.log(`Selecionada a opção '${value}' em '${selector}'`);
+    } else {
+      console.error(`Opção '${value}' não encontrada em '${selector}'`);
+    }
   }
 
   async login(user: UserDto) {
@@ -102,24 +128,39 @@ export class AlcifPage {
       body?.click();
     });
 
-    const advanceButton = await this.findButtonByText("Avançar");
-
-    if (advanceButton) {
-      await advanceButton.click();
-    } else {
-      console.error("Botão 'Avançar' não encontrado");
-    }
+    await this.clickButtonByText("Avançar");
   }
 
   async confirmSilumation() {
     // Wait for the spinner to disappear
     await this.page.waitForSelector(".spinner-border", { hidden: true });
 
-    const advanceButton = await this.findButtonByText("Avançar");
-    if (advanceButton) {
-      await advanceButton.click();
-    } else {
-      console.error("Botão 'Avançar' não encontrado");
-    }
+    await this.clickButtonByText("Avançar");
+  }
+
+  async fillInPersonalData(personalData: PersonalDataDto) {
+    await this.page.waitForSelector(".spinner-border", { hidden: true });
+
+    await this.page.evaluate(() => {
+      const body = document.querySelector("body");
+      body?.click();
+    });
+
+    await this.typeWithEffects("#nome", personalData.name);
+    await this.selectOption("#civil", personalData.maritalStatus);
+    await this.selectOption("#sexo", personalData.sex);
+    await this.selectOption("#ufn", personalData.birthState);
+    await this.waitRandomTime();
+    await this.selectOption("#cidaden", personalData.birthCity);
+    await this.typeWithEffects("#matricula", personalData.registration);
+    await this.typeWithEffects("#mae", personalData.motherName);
+    await this.typeWithEffects(
+      "#matricula_pensionista",
+      personalData.pensionerRegistration
+    );
+    await this.typeWithEffects("#salario", personalData.grossIncome);
+    await this.typeWithEffects("#ddn", personalData.birthDate);
+
+    await this.clickButtonByText("Avançar");
   }
 }
