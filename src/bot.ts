@@ -2,7 +2,7 @@ import { Page } from 'puppeteer';
 import { Step } from './step';
 import {
   FillAlcifForm,
-  GetCsvStep,
+  DownloadCsvStep,
   LoginBrbStep,
   LoginConsistechStep,
   SearchProposal,
@@ -17,7 +17,7 @@ export class Bot {
     // ajusta a ordem ai
     new LoginConsistechStep(),
     new SearchProposal(),
-    new GetCsvStep(),
+    new DownloadCsvStep(),
     new LoginBrbStep(),
     new FillAlcifForm(),
     new SendCsvStep(),
