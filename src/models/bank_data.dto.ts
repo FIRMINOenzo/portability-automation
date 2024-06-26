@@ -1,4 +1,4 @@
-import { BankAccountType } from "../enums";
+import { BankAccountType } from '../../enums';
 
 export class BankDataDto {
   bank: string;

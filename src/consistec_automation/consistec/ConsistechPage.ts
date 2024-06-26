@@ -1,76 +1,25 @@
-import { ElementHandle, Page } from "puppeteer";
-import { UserDto } from "../../brb_automation/dto";
-import { Proposal } from "../models";
+import { ElementHandle, Page } from 'puppeteer';
+import { UserDto } from '../../brb_automation/dto';
+import { Proposal } from '../../models';
+import { Bot } from '../../procedures/page.utils';
 
-export class ConsistechPage {
-  private page: Page;
+export class ConsistechPage extends Bot {
   private promptFunction: (questions: any) => Promise<any>;
-  private baseUrl: string = "https://app.consitech.com.br/#!";
+  private baseUrl: string = 'https://app.consitech.com.br/#!';
 
   constructor(page: Page, promptFunction: (questions: any) => Promise<any>) {
-    this.page = page;
+    super(page);
     this.promptFunction = promptFunction;
-  }
-
-  private waitRandomTime() {
-    return new Promise<void>((resolve) => {
-      setTimeout(() => {
-        resolve();
-      }, Math.floor(Math.random() * 5000) + 1000);
-    });
-  }
-
-  private async typeWithEffects(selector: string, text: string) {
-    await this.page.waitForSelector(selector);
-    await this.page.focus(selector);
-    await this.page.evaluate((selector: string) => {
-      const element = document.querySelector(selector) as HTMLInputElement;
-      if (element) {
-        element.value = "";
-      }
-    }, selector);
-    await this.page.type(selector, text);
-    await this.page.evaluate((selector: string) => {
-      const element = document.querySelector(selector) as HTMLInputElement;
-      if (element) {
-        const inputEvent = new Event("input", { bubbles: true });
-        element.dispatchEvent(inputEvent);
-        const changeEvent = new Event("change", { bubbles: true });
-        element.dispatchEvent(changeEvent);
-      }
-    }, selector);
-  }
-
-  private async findButtonByText(text: string): Promise<ElementHandle | null> {
-    const buttons = await this.page.$$("button");
-
-    for (let button of buttons) {
-      let buttonText = await this.page.evaluate((el) => el.textContent, button);
-      if (buttonText?.includes(text)) {
-        return button;
-      }
-    }
-
-    return null;
-  }
-
-  private async clickButtonByText(text: string) {
-    const button = await this.findButtonByText(text);
-    if (button) {
-      await button.click();
-    } else {
-      throw new Error(`Botão '${text}' não encontrado`);
-    }
   }
 
   public async login(user: UserDto) {
     await this.page.goto(`${this.baseUrl}/login`, {
-      waitUntil: "networkidle2",
+      waitUntil: 'networkidle2',
     });
 
-    await this.page.type("#email", user.email);
-    await this.page.type("#password", user.password);
-    await this.clickButtonByText("Entrar");
+    await this.page.type('#email', user.email);
+    await this.page.type('#password', user.password);
+    await this.clickButtonByText('Entrar');
   }
 
   public searchForProposal(proposal: Proposal) {}

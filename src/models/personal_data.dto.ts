@@ -1,4 +1,4 @@
-import { MaritalStatus, Sex, State } from "../enums";
+import { MaritalStatus, Sex, State } from '../../enums';
 
 export class PersonalDataDto {
   name: string;
@@ -37,10 +37,10 @@ export class PersonalDataDto {
   }
 
   private static formatBirthDate(birthDate: string): string {
-    return birthDate.replace(/\D/g, "").substring(0, 8);
+    return birthDate.replace(/\D/g, '').substring(0, 8);
   }
 
   private static formatGrossIncome(grossIncome: string): string {
-    return grossIncome.replace(/\D/g, "");
+    return grossIncome.replace(/\D/g, '');
   }
 }

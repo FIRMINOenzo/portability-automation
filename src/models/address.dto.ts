@@ -1,4 +1,4 @@
-import { AddressType } from "../enums";
+import { AddressType } from '../../enums';
 
 export class AddressDto {
   public zipCode: string;
@@ -25,6 +25,6 @@ export class AddressDto {
   }
 
   private static formatZipCode(zipCode: string): string {
-    return zipCode.replace(/\D/g, "");
+    return zipCode.replace(/\D/g, '');
   }
 }
