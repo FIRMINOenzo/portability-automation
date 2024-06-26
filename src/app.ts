@@ -18,6 +18,7 @@ import {
   State,
 } from "./brb_automation/enums";
 import { BankDataDto } from "./brb_automation/dto/bank_data.dto";
+import { ConsistechPage } from "./consistec_automation/consistec/ConsistechPage";
 
 async function run() {
   const browser: Browser = await puppeteer.launch({
@@ -83,4 +84,19 @@ async function run() {
   await alcifPage.fillInBankData(bankData);
 }
 
-run();
+async function run2() {
+  const browser: Browser = await puppeteer.launch({
+    headless: false,
+  });
+
+  const page: Page = await browser.newPage();
+  const consistechPage: ConsistechPage = new ConsistechPage(
+    page,
+    inquirer.prompt
+  );
+  const user = new UserDto("retencao@vsfinanceira.com.br", "vs@3105");
+
+  await consistechPage.login(user);
+}
+
+run2();
