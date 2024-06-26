@@ -2,19 +2,9 @@ import { ConsistecUrls } from '../../constants/Consistec';
 import { BotData } from '../../interfaces/BotData';
 import { waitRandomTime } from '../../procedures';
 import { Step } from '../../step';
-import { Downloads } from '../../constants/Downloads';
-import { System } from '../../utils';
 
 export class SearchProposal extends Step {
   async execute(botData: BotData): Promise<BotData> {
-    System.createCsvFolderIfNotExists();
-
-    const client = await this.bot.page.createCDPSession();
-    await client.send('Page.setDownloadBehavior', {
-      behavior: 'allow',
-      downloadPath: Downloads.PATH,
-    });
-
     let currentUrl = this.bot.page.url();
     while (currentUrl !== `${ConsistecUrls.BASE}/dashboard`) {
       await waitRandomTime();
