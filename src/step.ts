@@ -1,11 +1,11 @@
 import { Page } from 'puppeteer';
-import { PageUtils } from './procedures';
 import { Bot } from './bot';
 import { BotData } from './interfaces/BotData';
+import { StepUtils } from './procedures';
 
 export class Step {
   bot!: Bot;
-  protected utils = new PageUtils(this);
+  protected utils = new StepUtils(this);
 
   constructor() {}
 

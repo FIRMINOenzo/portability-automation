@@ -1,7 +1,7 @@
 import { ElementHandle, Page } from 'puppeteer';
 import { Step } from '../step';
 
-export class PageUtils {
+export class StepUtils {
   page!: Page;
 
   constructor(protected readonly step: Step) {}
