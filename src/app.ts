@@ -1,25 +1,25 @@
-import puppeteer, { Browser, Page } from "puppeteer";
-import inquirer from "inquirer";
+import puppeteer, { Browser, Page } from 'puppeteer';
+import inquirer from 'inquirer';
 
-import { AlcifPage } from "./brb_automation/alcif";
+import { AlcifPage } from './brb_automation/alcif';
 import {
   AddressDto,
   ContactDto,
   PersonalDataDto,
   SimulationDto,
   UserDto,
-} from "./brb_automation/dto";
-import { env } from "./shared/env";
+} from './brb_automation/dto';
+import { env } from './shared/env';
 import {
   AddressType,
   BankAccountType,
   MaritalStatus,
   Sex,
   State,
-} from "./brb_automation/enums";
-import { BankDataDto } from "./brb_automation/dto/bank_data.dto";
-import { ConsistechPage } from "./consistec_automation/consistec/ConsistechPage";
-import { Proposal } from "./consistec_automation/models";
+} from './brb_automation/enums';
+import { BankDataDto } from './brb_automation/dto/bank_data.dto';
+import { ConsistechPage } from './consistec_automation/consistec/ConsistechPage';
+import { Proposal } from './consistec_automation/models';
 
 async function run() {
   const browser: Browser = await puppeteer.launch({
@@ -28,57 +28,57 @@ async function run() {
 
   const page: Page = await browser.newPage();
   const alcifPage: AlcifPage = new AlcifPage(page, inquirer.prompt);
-  const user = new UserDto(env.user.email ?? "", env.user.password ?? "");
+  const user = new UserDto(env.user.email ?? '', env.user.password ?? '');
 
   await alcifPage.login(user);
 
   const simulation = new SimulationDto(
-    "68969555897",
-    "1000",
-    "10000",
-    "10",
-    "123",
-    "123",
-    "7232"
+    '68969555897',
+    '1000',
+    '10000',
+    '10',
+    '123',
+    '123',
+    '7232'
   );
 
   await alcifPage.simulateProposal(simulation);
   await alcifPage.confirmSilumation();
 
   const personalData = new PersonalDataDto(
-    "Jonas Abreu da Silva",
+    'Jonas Abreu da Silva',
     MaritalStatus.SINGLE,
     Sex.MALE,
-    "01/01/1990",
+    '01/01/1990',
     State.SAO_PAULO,
-    "Bragança Paulista",
-    "123456789",
-    "Maria Abreu da Silva",
-    "987654321",
-    "350000"
+    'Bragança Paulista',
+    '123456789',
+    'Maria Abreu da Silva',
+    '987654321',
+    '350000'
   );
 
   await alcifPage.fillInPersonalData(personalData);
 
   const address = new AddressDto(
-    "04020-030",
+    '04020-030',
     AddressType.RESIDENTIAL,
-    "Rua Euclides Bahiano",
-    "337",
-    "",
-    "Centro"
+    'Rua Euclides Bahiano',
+    '337',
+    '',
+    'Centro'
   );
 
   await alcifPage.fillInAddressData(address);
 
-  const contact = new ContactDto("11999999999", "");
+  const contact = new ContactDto('11999999999', '');
 
   await alcifPage.fillInContactData(contact);
 
   const bankData = new BankDataDto(
-    "104",
-    "123456",
-    "123456123456",
+    '104',
+    '123456',
+    '123456123456',
     BankAccountType.CURRENT
   );
 
@@ -95,11 +95,11 @@ async function run2() {
     page,
     inquirer.prompt
   );
-  const user = new UserDto("retencao@vsfinanceira.com.br", "vs@3105");
+  const user = new UserDto('retencao@vsfinanceira.com.br', 'vs@3105');
 
   await consistechPage.login(user);
 
-  const proposal = new Proposal("139557");
+  const proposal = new Proposal('139557');
 
   await consistechPage.searchProposal(proposal);
 }
