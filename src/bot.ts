@@ -1,15 +1,17 @@
 import { Page } from 'puppeteer';
 import { Step } from './step';
-import { GetCsvStep } from './steps/Consistec/GetCsv.step';
-import { LoginBrbStep } from './steps/BRB/LoginBrb.step';
-import { LoginConsistechStep } from './steps/Consistec/LoginConsistech.step';
-import { SendCsvStep } from './steps/BRB/SendCsv.step';
-import { SearchProposal } from './steps/Consistec/SearchProposal.step';
-import { FillAlcifForm } from './steps/BRB/FillAlcifForm.step';
-import { Proposal } from './interfaces/BotData';
+import {
+  FillAlcifForm,
+  GetCsvStep,
+  LoginBrbStep,
+  LoginConsistechStep,
+  SearchProposal,
+  SendCsvStep,
+} from './steps';
+import { BotData } from './interfaces/BotData';
 
 export class Bot {
-  data: Proposal;
+  data: BotData;
   page: Page;
   steps: Step[] = [
     // ajusta a ordem ai
@@ -21,7 +23,7 @@ export class Bot {
     new SendCsvStep(),
   ];
 
-  constructor(page: Page, data: Proposal) {
+  constructor(page: Page, data: BotData) {
     this.data = data;
     this.page = page;
   }
