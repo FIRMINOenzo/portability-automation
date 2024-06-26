@@ -1,5 +1,7 @@
 import { ElementHandle, Page } from "puppeteer";
-import { PersonalDataDto, SimulationDto, UserDto } from "../dto";
+import { ContactDto, PersonalDataDto, SimulationDto, UserDto } from "../dto";
+import { AddressDto } from "../dto/address.dto";
+import { BankDataDto } from "../dto/bank_data.dto";
 
 export class AlcifPage {
   private page: Page;
@@ -58,7 +60,7 @@ export class AlcifPage {
     if (button) {
       await button.click();
     } else {
-      console.error(`Botão '${text}' não encontrado`);
+      throw new Error(`Botão '${text}' não encontrado`);
     }
   }
 
@@ -82,9 +84,9 @@ export class AlcifPage {
 
     if (exists) {
       await this.page.select(selector, value);
-      console.log(`Selecionada a opção '${value}' em '${selector}'`);
+      // console.log(`Selecionada a opção '${value}' em '${selector}'`);
     } else {
-      console.error(`Opção '${value}' não encontrada em '${selector}'`);
+      throw new Error(`Opção '${value}' não encontrada em '${selector}'`);
     }
   }
 
@@ -169,6 +171,58 @@ export class AlcifPage {
     );
     await this.typeWithEffects("#salario", personalData.grossIncome);
     await this.typeWithEffects("#ddn", personalData.birthDate);
+
+    await this.clickButtonByText("Avançar");
+  }
+
+  async fillInAddressData(address: AddressDto) {
+    this.waitRandomTime();
+
+    await this.page.evaluate(() => {
+      const body = document.querySelector("body");
+      body?.click();
+    });
+
+    await this.typeWithEffects("#cep", address.zipCode);
+
+    this.waitRandomTime();
+
+    await this.selectOption("#tipo_endereco", "565"); // Residencial code
+    await this.selectOption("#t_log", address.addressType);
+    await this.typeWithEffects("#logradouro", address.street);
+    await this.typeWithEffects("#complemento", address.complement);
+    await this.typeWithEffects("#numero", address.number);
+    await this.typeWithEffects("#bairro", address.neighborhood);
+
+    await this.clickButtonByText("Avançar");
+  }
+
+  async fillInContactData(contact: ContactDto) {
+    this.waitRandomTime();
+
+    await this.page.evaluate(() => {
+      const body = document.querySelector("body");
+      body?.click();
+    });
+
+    await this.typeWithEffects("#celular", contact.phone);
+    await this.typeWithEffects("#email", contact.email);
+
+    await this.clickButtonByText("Avançar");
+  }
+
+  async fillInBankData(bankData: BankDataDto) {
+    this.waitRandomTime();
+
+    await this.page.evaluate(() => {
+      const body = document.querySelector("body");
+      body?.click();
+    });
+
+    await this.selectOption("#banco", bankData.bank);
+    await this.typeWithEffects("#agencia", bankData.agency);
+    await this.typeWithEffects("#conta", bankData.account);
+    await this.selectOption("#t_conta", bankData.accountType);
 
     await this.clickButtonByText("Avançar");
   }

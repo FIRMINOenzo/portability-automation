@@ -1,10 +1,23 @@
 import puppeteer, { Browser, Page } from "puppeteer";
 import inquirer from "inquirer";
 
-import { AlcifPage } from "./alcif";
-import { PersonalDataDto, SimulationDto, UserDto } from "./dto";
+import { AlcifPage } from "./brb_automation/alcif";
+import {
+  AddressDto,
+  ContactDto,
+  PersonalDataDto,
+  SimulationDto,
+  UserDto,
+} from "./brb_automation/dto";
 import { env } from "./shared/env";
-import { MaritalStatus, Sex, State } from "./enums";
+import {
+  AddressType,
+  BankAccountType,
+  MaritalStatus,
+  Sex,
+  State,
+} from "./brb_automation/enums";
+import { BankDataDto } from "./brb_automation/dto/bank_data.dto";
 
 async function run() {
   const browser: Browser = await puppeteer.launch({
@@ -44,6 +57,30 @@ async function run() {
   );
 
   await alcifPage.fillInPersonalData(personalData);
+
+  const address = new AddressDto(
+    "04020-030",
+    AddressType.RESIDENTIAL,
+    "Rua Euclides Bahiano",
+    "337",
+    "",
+    "Centro"
+  );
+
+  await alcifPage.fillInAddressData(address);
+
+  const contact = new ContactDto("11999999999", "");
+
+  await alcifPage.fillInContactData(contact);
+
+  const bankData = new BankDataDto(
+    "104",
+    "123456",
+    "123456123456",
+    BankAccountType.CURRENT
+  );
+
+  await alcifPage.fillInBankData(bankData);
 }
 
 run();
