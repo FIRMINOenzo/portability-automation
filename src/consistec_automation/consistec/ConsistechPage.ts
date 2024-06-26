@@ -2,6 +2,9 @@ import { ElementHandle, Page } from "puppeteer";
 import { UserDto } from "../../brb_automation/dto";
 import { Proposal } from "../models";
 
+import * as path from "path";
+import { existsSync, mkdirSync } from "fs";
+
 export class ConsistechPage {
   private page: Page;
   private promptFunction: (questions: any) => Promise<any>;
@@ -73,5 +76,42 @@ export class ConsistechPage {
     await this.clickButtonByText("Entrar");
   }
 
-  public searchForProposal(proposal: Proposal) {}
+  public async searchProposal(proposal: Proposal) {
+    // create csv folder if not exists
+    if (existsSync(path.join(process.cwd(), "csv"))) {
+      mkdirSync(path.join(process.cwd(), "csv"));
+      console.log("Pasta csv criada");
+    }
+
+    const client = await this.page.createCDPSession();
+    await client.send("Page.setDownloadBehavior", {
+      behavior: "allow",
+      downloadPath: path.join(process.cwd(), "csv"),
+    });
+
+    let currentUrl = this.page.url();
+    while (currentUrl !== `${this.baseUrl}/dashboard`) {
+      await this.waitRandomTime();
+      currentUrl = this.page.url();
+    }
+
+    await this.page.goto(`${this.baseUrl}/propostas`, {
+      waitUntil: "networkidle2",
+    });
+
+    await this.typeWithEffects("input[name='id']", proposal.id);
+    await this.clickButtonByText("Buscar");
+
+    await this.page.waitForFunction(() => {
+      const buscarTab = document.querySelector('li[heading="Buscar"]');
+      const editarTab = document.querySelector('li[heading="Editar"]');
+      return (
+        !buscarTab?.classList.contains("active") &&
+        editarTab?.classList.contains("active")
+      );
+    });
+
+    await this.waitRandomTime();
+    await this.clickButtonByText("Baixar CSV");
+  }
 }

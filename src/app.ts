@@ -19,6 +19,7 @@ import {
 } from "./brb_automation/enums";
 import { BankDataDto } from "./brb_automation/dto/bank_data.dto";
 import { ConsistechPage } from "./consistec_automation/consistec/ConsistechPage";
+import { Proposal } from "./consistec_automation/models";
 
 async function run() {
   const browser: Browser = await puppeteer.launch({
@@ -97,6 +98,10 @@ async function run2() {
   const user = new UserDto("retencao@vsfinanceira.com.br", "vs@3105");
 
   await consistechPage.login(user);
+
+  const proposal = new Proposal("139557");
+
+  await consistechPage.searchProposal(proposal);
 }
 
 run2();
