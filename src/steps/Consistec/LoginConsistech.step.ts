@@ -8,8 +8,8 @@ export class LoginConsistechStep extends Step {
       waitUntil: 'networkidle2',
     });
 
-    await this.bot.page.type('#email', botData.user.email);
-    await this.bot.page.type('#password', botData.user.password);
+    await this.bot.page.type('#email', botData.consistechUser.email);
+    await this.bot.page.type('#password', botData.consistechUser.password);
     await this.utils.clickButtonByText('Entrar');
 
     return botData;

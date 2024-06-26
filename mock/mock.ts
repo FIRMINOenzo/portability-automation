@@ -14,9 +14,14 @@ import {
   PersonalData,
 } from '../src/models';
 import { BankData } from '../src/models/BankData';
+import { env } from '../src/shared/env';
 
 export const mockRun: BotData = {
-  user: new User('asdasd', 'asdasd'),
+  brbUser: new User(env.user.brb.email || '', env.user.brb.password || ''),
+  consistechUser: new User(
+    env.user.consistech.email || '',
+    env.user.consistech.password || ''
+  ),
   address: new Address(
     '04020-030',
     AddressType.RESIDENTIAL,

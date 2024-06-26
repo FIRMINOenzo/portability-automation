@@ -2,8 +2,14 @@ import * as dotenv from 'dotenv';
 
 const getEnv = () => ({
   user: {
-    email: process.env.ACCOUNT_EMAIL,
-    password: process.env.ACCOUNT_PASSWORD,
+    brb: {
+      email: process.env.ACCOUNT_EMAIL,
+      password: process.env.ACCOUNT_PASSWORD,
+    },
+    consistech: {
+      email: process.env.CONSISTECH_EMAIL,
+      password: process.env.CONSISTECH_PASSWORD,
+    },
   },
 });
 
