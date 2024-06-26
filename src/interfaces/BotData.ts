@@ -1,5 +1,12 @@
-import { Address, Contact, PersonalData, Simulation, User } from '../models';
-import { BankData } from '../models/BankData';
+import {
+  Address,
+  BankData,
+  Contact,
+  PersonalData,
+  Proposal,
+  Simulation,
+  User,
+} from '../models';
 
 // trocar pelo nome do objeto que é retornado
 // remoter o , deixar só como uma classe mesmo, por isso eu movi pra model
@@ -11,4 +18,5 @@ export interface BotData {
   contact: Contact;
   simulation: Simulation;
   personalData: PersonalData;
+  proposal: Proposal;
 }

@@ -12,6 +12,7 @@ import {
   Simulation,
   Contact,
   PersonalData,
+  Proposal,
 } from '../src/models';
 import { BankData } from '../src/models/BankData';
 import { env } from '../src/shared/env';
@@ -58,4 +59,5 @@ export const mockRun: BotData = {
     '987654321',
     '350000'
   ),
+  proposal: new Proposal('139557'),
 };
