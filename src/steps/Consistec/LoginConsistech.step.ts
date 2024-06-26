@@ -1,10 +1,10 @@
-import { BRBUrls } from '../../constants/BRB';
+import { ConsistecUrls } from '../../constants/Consistec';
 import { BotData } from '../../interfaces/BotData';
 import { Step } from '../../step';
 
 export class LoginConsistechStep extends Step {
   async execute(botData: BotData): Promise<BotData> {
-    await this.bot.page.goto(`${BRBUrls.BASE}/login`, {
+    await this.bot.page.goto(`${ConsistecUrls.BASE}/login`, {
       waitUntil: 'networkidle2',
     });
 
