@@ -1,4 +1,3 @@
-import { Page } from 'puppeteer';
 import { Bot } from './bot';
 import { BotData } from './interfaces/BotData';
 import { StepUtils } from './steps';

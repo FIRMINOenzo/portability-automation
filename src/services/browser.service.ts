@@ -18,7 +18,7 @@ export class BrowserService {
 
       await page.setRequestInterception(true);
 
-      page.on('request', req => {
+      page.on('request', (req) => {
         if (
           this.interceptRequests.includes(req.resourceType()) ||
           this.interceptRequests.includes(req.url())

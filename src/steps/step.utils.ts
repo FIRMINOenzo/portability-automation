@@ -31,7 +31,7 @@ export class StepUtils {
     const buttons = await this.page.$$('button');
 
     for (let button of buttons) {
-      let buttonText = await this.page.evaluate(el => el.textContent, button);
+      let buttonText = await this.page.evaluate((el) => el.textContent, button);
       if (buttonText?.includes(text)) {
         return button;
       }
@@ -58,7 +58,7 @@ export class StepUtils {
         ) as HTMLSelectElement;
         if (selectElement) {
           return Array.from(selectElement.options).some(
-            option => option.value === value || option.text === value
+            (option) => option.value === value || option.text === value
           );
         }
         return false;
