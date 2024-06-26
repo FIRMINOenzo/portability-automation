@@ -1,4 +1,4 @@
-export class Praoposal {
+export class Proposal {
   id: string;
 
   constructor(id: string) {

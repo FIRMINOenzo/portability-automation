@@ -1,6 +1,6 @@
-import { AddressType } from '../../enums';
+import { AddressType } from '../enums';
 
-export class AddressDto {
+export class Address {
   public zipCode: string;
   public addressType: AddressType;
   public street: string;
@@ -16,7 +16,7 @@ export class AddressDto {
     complement: string,
     neighborhood: string
   ) {
-    this.zipCode = AddressDto.formatZipCode(zipCode);
+    this.zipCode = Address.formatZipCode(zipCode);
     this.addressType = addressType;
     this.street = street;
     this.number = number;

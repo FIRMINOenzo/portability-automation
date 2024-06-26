@@ -2,10 +2,9 @@ import { ElementHandle, Page } from 'puppeteer';
 import { Step } from '../step';
 
 export class PageUtils {
-  page: Page;
-  constructor(protected readonly step: Step) {
-    this.page = step.bot.page;
-  }
+  page!: Page;
+
+  constructor(protected readonly step: Step) {}
 
   async typeWithEffects(selector: string, text: string) {
     await this.page.waitForSelector(selector);

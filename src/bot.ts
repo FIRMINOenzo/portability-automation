@@ -6,7 +6,7 @@ import { LoginConsistechStep } from './steps/Consistec/LoginConsistech.step';
 import { SendCsvStep } from './steps/BRB/SendCsv.step';
 import { SearchProposal } from './steps/Consistec/SearchProposal.step';
 import { FillAlcifForm } from './steps/BRB/FillAlcifForm.step';
-import { Proposal } from './interfaces/Proposal';
+import { Proposal } from './interfaces/BotData';
 
 export class Bot {
   data: Proposal;
@@ -26,10 +26,14 @@ export class Bot {
     this.page = page;
   }
 
+  get _page() {
+    return this.page;
+  }
+
   async run() {
     for (const step of this.steps) {
       step.init(this);
-      await step.execute();
+      await step.execute(this.data);
     }
   }
 }

@@ -1,6 +1,6 @@
-import { MaritalStatus, Sex, State } from '../../enums';
+import { MaritalStatus, Sex, State } from '../enums';
 
-export class PersonalDataDto {
+export class PersonalData {
   name: string;
   maritalStatus: MaritalStatus;
   sex: Sex;
@@ -27,13 +27,13 @@ export class PersonalDataDto {
     this.name = name;
     this.maritalStatus = maritalStatus;
     this.sex = sex;
-    this.birthDate = PersonalDataDto.formatBirthDate(birthDate);
+    this.birthDate = PersonalData.formatBirthDate(birthDate);
     this.birthState = birthState;
     this.birthCity = birthCity;
     this.registration = registration;
     this.motherName = motherName;
     this.pensionerRegistration = pensionerRegistration;
-    this.grossIncome = PersonalDataDto.formatGrossIncome(grossIncome);
+    this.grossIncome = PersonalData.formatGrossIncome(grossIncome);
   }
 
   private static formatBirthDate(birthDate: string): string {

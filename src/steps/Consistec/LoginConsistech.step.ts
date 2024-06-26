@@ -1,17 +1,17 @@
 import { BRBUrls } from '../../constants/BRB';
-import { Proposal } from '../../interfaces/Proposal';
+import { BotData } from '../../interfaces/BotData';
 import { Step } from '../../step';
 
 export class LoginConsistechStep extends Step {
-  async execute(proposal: Proposal): Promise<Proposal> {
+  async execute(botData: BotData): Promise<BotData> {
     await this.bot.page.goto(`${BRBUrls.BASE}/login`, {
       waitUntil: 'networkidle2',
     });
 
-    await this.bot.page.type('#email', proposal.user.email);
-    await this.bot.page.type('#password', proposal.user.password);
+    await this.bot.page.type('#email', botData.user.email);
+    await this.bot.page.type('#password', botData.user.password);
     await this.utils.clickButtonByText('Entrar');
 
-    return proposal;
+    return botData;
   }
 }

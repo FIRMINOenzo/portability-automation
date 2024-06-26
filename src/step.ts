@@ -1,7 +1,7 @@
 import { Page } from 'puppeteer';
 import { PageUtils } from './procedures';
 import { Bot } from './bot';
-import { Proposal } from './interfaces/Proposal';
+import { BotData } from './interfaces/BotData';
 
 export class Step {
   bot!: Bot;
@@ -9,11 +9,12 @@ export class Step {
 
   constructor() {}
 
-  async execute(proposal: Proposal): Promise<Proposal> {
-    return proposal;
+  async execute(botData: BotData): Promise<BotData> {
+    return botData;
   }
 
   init(bot: Bot) {
     this.bot = bot;
+    this.utils.page = this.bot._page;
   }
 }

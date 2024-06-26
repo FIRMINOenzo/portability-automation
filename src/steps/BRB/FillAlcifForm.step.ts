@@ -1,21 +1,17 @@
 import { AlcifUrls } from '../../constants/Alcif';
-import { Proposal } from '../../interfaces/Proposal';
-import {
-  SimulationDto,
-  PersonalDataDto,
-  AddressDto,
-  ContactDto,
-} from '../../models';
-import { BankDataDto } from '../../models/bank_data.dto';
+import { BotData } from '../../interfaces/BotData';
+import { Simulation, PersonalData, Address, Contact } from '../../models';
+import { BankData } from '../../models/BankData';
+
 import { waitRandomTime } from '../../procedures';
 import { Step } from '../../step';
 
 export class FillAlcifForm extends Step {
-  async execute(proposal: Proposal): Promise<Proposal> {
+  async execute(proposal: BotData): Promise<BotData> {
     return proposal;
   }
 
-  async simulateProposal(client: SimulationDto) {
+  async simulateProposal(client: Simulation) {
     await this.bot.page.goto(`${AlcifUrls.BASE}/admin/Portabilidade`, {
       waitUntil: 'networkidle2',
     });
@@ -72,7 +68,7 @@ export class FillAlcifForm extends Step {
     await this.utils.clickButtonByText('Avançar');
   }
 
-  async fillInPersonalData(personalData: PersonalDataDto) {
+  async fillInPersonalData(personalData: PersonalData) {
     await this.bot.page.waitForSelector('.spinner-border', { hidden: true });
 
     await this.bot.page.evaluate(() => {
@@ -98,7 +94,7 @@ export class FillAlcifForm extends Step {
     await this.utils.clickButtonByText('Avançar');
   }
 
-  async fillInAddressData(address: AddressDto) {
+  async fillInAddressData(address: Address) {
     waitRandomTime();
 
     await this.bot.page.evaluate(() => {
@@ -120,7 +116,7 @@ export class FillAlcifForm extends Step {
     await this.utils.clickButtonByText('Avançar');
   }
 
-  async fillInContactData(contact: ContactDto) {
+  async fillInContactData(contact: Contact) {
     waitRandomTime();
 
     await this.bot.page.evaluate(() => {
@@ -134,7 +130,7 @@ export class FillAlcifForm extends Step {
     await this.utils.clickButtonByText('Avançar');
   }
 
-  async fillInBankData(bankData: BankDataDto) {
+  async fillInBankData(bankData: BankData) {
     waitRandomTime();
 
     await this.bot.page.evaluate(() => {

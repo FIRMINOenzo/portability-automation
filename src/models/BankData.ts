@@ -1,6 +1,6 @@
-import { BankAccountType } from '../../enums';
+import { BankAccountType } from '../enums';
 
-export class BankDataDto {
+export class BankData {
   bank: string;
   agency: string;
   account: string;

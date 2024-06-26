@@ -5,19 +5,19 @@ import {
   Sex,
   State,
 } from '../src/enums';
-import { Proposal } from '../src/interfaces/Proposal';
+import { BotData } from '../src/interfaces/BotData';
 import {
-  AddressDto,
-  ContactDto,
-  PersonalDataDto,
-  SimulationDto,
-  UserDto,
+  User,
+  Address,
+  Simulation,
+  Contact,
+  PersonalData,
 } from '../src/models';
-import { BankDataDto } from '../src/models/bank_data.dto';
+import { BankData } from '../src/models/BankData';
 
-export const mockRun: Proposal = {
-  user: new UserDto('asdasd', 'asdasd'),
-  address: new AddressDto(
+export const mockRun: BotData = {
+  user: new User('asdasd', 'asdasd'),
+  address: new Address(
     '04020-030',
     AddressType.RESIDENTIAL,
     'Rua Euclides Bahiano',
@@ -25,7 +25,7 @@ export const mockRun: Proposal = {
     '',
     'Centro'
   ),
-  simulation: new SimulationDto(
+  simulation: new Simulation(
     '68969555897',
     '1000',
     '10000',
@@ -34,14 +34,14 @@ export const mockRun: Proposal = {
     '123',
     '7232'
   ),
-  bankDate: new BankDataDto(
+  bankDate: new BankData(
     '104',
     '123456',
     '123456123456',
     BankAccountType.CURRENT
   ),
-  contact: new ContactDto('11999999999', ''),
-  personalData: new PersonalDataDto(
+  contact: new Contact('11999999999', ''),
+  personalData: new PersonalData(
     'Jonas Abreu da Silva',
     MaritalStatus.SINGLE,
     Sex.MALE,

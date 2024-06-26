@@ -1,4 +1,4 @@
-export class SimulationDto {
+export class Simulation {
   cpf: string;
   installmentValue: string;
   outstandingBalance: string;

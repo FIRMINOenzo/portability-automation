@@ -1,8 +1,8 @@
-import { Proposal } from '../../interfaces/Proposal';
+import { BotData } from '../../interfaces/BotData';
 import { Step } from '../../step';
 
 export class SearchProposal extends Step {
-  async execute(proposal: Proposal): Promise<Proposal> {
-    return proposal;
+  async execute(botData: BotData): Promise<BotData> {
+    return botData;
   }
 }
