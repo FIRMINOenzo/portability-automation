@@ -48,7 +48,6 @@ export class FillAlcifForm extends Step {
     );
 
     await this.utils.selectOption('#convenio_id', '28'); // INSS code
-    await this.utils.selectOption('#prazo', client.term);
 
     // Ported bank selection
     await this.bot.page.waitForSelector('.css-13cymwt-control');
@@ -64,6 +63,7 @@ export class FillAlcifForm extends Step {
       body?.click();
     });
 
+    await this.utils.selectOption('#prazo', client.term);
     await this.utils.clickButtonByText('Avançar');
   }
 
