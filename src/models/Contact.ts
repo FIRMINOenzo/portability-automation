@@ -1,19 +1,11 @@
 export class Contact {
   phone: string;
-  email: string;
 
-  constructor(phone: string, email: string) {
-    this.phone = phone;
-    this.email = Contact.validateEmail(email);
+  constructor(phone: string) {
+    this.phone = Contact.formatPhone(phone);
   }
 
-  private static validateEmail(email: string): string {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    if (!emailRegex.test(email)) {
-      return '';
-    }
-
-    return email;
+  private static formatPhone(phone: string): string {
+    return phone.replace(/\D/g, '');
   }
 }

@@ -9,8 +9,6 @@ export class PersonalData {
   birthCity: string;
   registration: string;
   motherName: string;
-  pensionerRegistration: string;
-  grossIncome: string;
 
   constructor(
     name: string,
@@ -20,9 +18,7 @@ export class PersonalData {
     birthState: State,
     birthCity: string,
     registration: string,
-    motherName: string,
-    pensionerRegistration: string,
-    grossIncome: string
+    motherName: string
   ) {
     this.name = name;
     this.maritalStatus = maritalStatus;
@@ -32,8 +28,6 @@ export class PersonalData {
     this.birthCity = birthCity;
     this.registration = registration;
     this.motherName = motherName;
-    this.pensionerRegistration = pensionerRegistration;
-    this.grossIncome = PersonalData.formatGrossIncome(grossIncome);
   }
 
   private static formatBirthDate(birthDate: string): string {

@@ -4,6 +4,7 @@ import {
   MaritalStatus,
   Sex,
   State,
+  Term,
 } from '../src/enums';
 import { BotData } from '../src/interfaces/BotData';
 import {
@@ -36,6 +37,7 @@ export const mockRun: BotData = {
     simulation: new Simulation(
       '68969555897',
       '1000',
+      Term.TWELVE,
       '10000',
       '10',
       '123',
@@ -48,7 +50,7 @@ export const mockRun: BotData = {
       '123456123456',
       BankAccountType.CURRENT
     ),
-    contact: new Contact('11999999999', ''),
+    contact: new Contact('11999999999'),
     personalData: new PersonalData(
       'Jonas Abreu da Silva',
       MaritalStatus.SINGLE,
@@ -57,9 +59,7 @@ export const mockRun: BotData = {
       State.SAO_PAULO,
       'Bragança Paulista',
       '123456789',
-      'Maria Abreu da Silva',
-      '987654321',
-      '350000'
+      'Maria Abreu da Silva'
     ),
   },
 };
