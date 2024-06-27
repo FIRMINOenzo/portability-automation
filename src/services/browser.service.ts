@@ -6,7 +6,7 @@ type Context = {
 };
 
 export class BrowserService {
-  private interceptRequests = ['image', 'font', '.css'];
+  private interceptRequests = ['font', '.css'];
 
   async createPage(): Promise<Context | null> {
     try {
