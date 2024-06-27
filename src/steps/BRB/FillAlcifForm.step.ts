@@ -7,11 +7,18 @@ import { waitRandomTime } from '../../procedures';
 import { Step } from '../../step';
 
 export class FillAlcifForm extends Step {
-  async execute(proposal: BotData): Promise<BotData> {
-    return proposal;
+  async execute(botData: BotData): Promise<BotData> {
+    await this.simulateProposal(botData.brbProposalData.simulation);
+    await this.confirmSilumation();
+    await this.fillInPersonalData(botData.brbProposalData.personalData);
+    await this.fillInAddressData(botData.brbProposalData.address);
+    await this.fillInContactData(botData.brbProposalData.contact);
+    await this.fillInBankData(botData.brbProposalData.bankData);
+
+    return botData;
   }
 
-  async simulateProposal(client: Simulation) {
+  private async simulateProposal(client: Simulation) {
     await this.bot.page.goto(`${AlcifUrls.BASE}/admin/Portabilidade`, {
       waitUntil: 'networkidle2',
     });
@@ -40,9 +47,7 @@ export class FillAlcifForm extends Step {
       client.remainingInstallments
     );
 
-    // Select covenant
-    await this.bot.page.waitForSelector('#convenio_id');
-    await this.bot.page.select('#convenio_id', '28');
+    await this.utils.selectOption('#convenio_id', '28'); // INSS code
 
     // Ported bank selection
     await this.bot.page.waitForSelector('.css-13cymwt-control');
@@ -58,17 +63,18 @@ export class FillAlcifForm extends Step {
       body?.click();
     });
 
+    await this.utils.selectOption('#prazo', client.term);
     await this.utils.clickButtonByText('Avançar');
   }
 
-  async confirmSilumation() {
+  private async confirmSilumation() {
     // Wait for the spinner to disappear
     await this.bot.page.waitForSelector('.spinner-border', { hidden: true });
 
     await this.utils.clickButtonByText('Avançar');
   }
 
-  async fillInPersonalData(personalData: PersonalData) {
+  private async fillInPersonalData(personalData: PersonalData) {
     await this.bot.page.waitForSelector('.spinner-border', { hidden: true });
 
     await this.bot.page.evaluate(() => {
@@ -84,17 +90,12 @@ export class FillAlcifForm extends Step {
     await this.utils.selectOption('#cidaden', personalData.birthCity);
     await this.utils.typeWithEffects('#matricula', personalData.registration);
     await this.utils.typeWithEffects('#mae', personalData.motherName);
-    await this.utils.typeWithEffects(
-      '#matricula_pensionista',
-      personalData.pensionerRegistration
-    );
-    await this.utils.typeWithEffects('#salario', personalData.grossIncome);
     await this.utils.typeWithEffects('#ddn', personalData.birthDate);
 
     await this.utils.clickButtonByText('Avançar');
   }
 
-  async fillInAddressData(address: Address) {
+  private async fillInAddressData(address: Address) {
     waitRandomTime();
 
     await this.bot.page.evaluate(() => {
@@ -116,7 +117,7 @@ export class FillAlcifForm extends Step {
     await this.utils.clickButtonByText('Avançar');
   }
 
-  async fillInContactData(contact: Contact) {
+  private async fillInContactData(contact: Contact) {
     waitRandomTime();
 
     await this.bot.page.evaluate(() => {
@@ -125,12 +126,11 @@ export class FillAlcifForm extends Step {
     });
 
     await this.utils.typeWithEffects('#celular', contact.phone);
-    await this.utils.typeWithEffects('#email', contact.email);
 
     await this.utils.clickButtonByText('Avançar');
   }
 
-  async fillInBankData(bankData: BankData) {
+  private async fillInBankData(bankData: BankData) {
     waitRandomTime();
 
     await this.bot.page.evaluate(() => {

@@ -18,10 +18,14 @@ export class Address {
   ) {
     this.zipCode = Address.formatZipCode(zipCode);
     this.addressType = addressType;
-    this.street = street;
-    this.number = number;
-    this.complement = complement;
-    this.neighborhood = neighborhood;
+    this.street = Address.removeSpecialCharacters(street);
+    this.number = Address.removeSpecialCharacters(number);
+    this.complement = Address.removeSpecialCharacters(complement);
+    this.neighborhood = Address.removeSpecialCharacters(neighborhood);
+  }
+
+  private static removeSpecialCharacters(value: string): string {
+    return value.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
   }
 
   private static formatZipCode(zipCode: string): string {
