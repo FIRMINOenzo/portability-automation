@@ -14,15 +14,17 @@ import {
   Contact,
   PersonalData,
   Proposal,
+  ConsitechUser,
 } from '../src/models';
 import { BankData } from '../src/models/BankData';
 import { env } from '../src/shared/env';
 
 export const mockRun: BotData = {
   brbUser: new User(env.user.brb.email ?? '', env.user.brb.password ?? ''),
-  consistechUser: new User(
-    env.user.consistech.email ?? '',
-    env.user.consistech.password ?? ''
+  consitechUser: new ConsitechUser(
+    env.user.consitech.email ?? '',
+    env.user.consitech.password ?? '',
+    ''
   ),
   proposal: new Proposal('139557'),
   brbProposalData: {

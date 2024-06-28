@@ -1,3 +1,3 @@
 export * from './BRB';
-export * from './Consistec';
+export * from './Consitech';
 export * from './step.utils';

@@ -1,4 +1,4 @@
-import { ConsistecUrls } from '../../constants/Consistec';
+import { ConsitechUrls } from '../../constants/Consitech';
 import { BotData } from '../../interfaces/BotData';
 import { waitRandomTime } from '../../procedures';
 import { Step } from '../../step';
@@ -6,12 +6,12 @@ import { Step } from '../../step';
 export class SearchProposal extends Step {
   async execute(botData: BotData): Promise<BotData> {
     let currentUrl = this.bot.page.url();
-    while (currentUrl !== `${ConsistecUrls.BASE}/dashboard`) {
+    while (currentUrl !== `${ConsitechUrls.BASE}/dashboard`) {
       await waitRandomTime();
       currentUrl = this.bot.page.url();
     }
 
-    await this.bot.page.goto(`${ConsistecUrls.BASE}/propostas`, {
+    await this.bot.page.goto(`${ConsitechUrls.BASE}/propostas`, {
       waitUntil: 'networkidle2',
     });
 

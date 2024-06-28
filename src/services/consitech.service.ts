@@ -25,7 +25,7 @@ type City = {
   deleted_by: string | null;
 };
 
-export class ConsistechService {
+export class ConsitechService {
   async login(user: User): Promise<ConsitechUser> {
     const response = await axios.post(
       `${ConsitechUrls.BASE}/authenticate`,

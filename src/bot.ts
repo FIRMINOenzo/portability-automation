@@ -4,7 +4,7 @@ import {
   FillAlcifForm,
   DownloadCsvStep,
   LoginBrbStep,
-  LoginConsistechStep,
+  LoginConsitechStep,
   SearchProposal,
   SendCsvStep,
 } from './steps';
@@ -15,7 +15,7 @@ export class Bot {
   page: Page;
   steps: Step[] = [
     // ajusta a ordem ai
-    new LoginConsistechStep(),
+    new LoginConsitechStep(),
     new SearchProposal(),
     new DownloadCsvStep(),
     new LoginBrbStep(),
