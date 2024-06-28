@@ -1,5 +1,14 @@
 import axios from 'axios';
-import { User, ConsitechUser, Proposal } from '../models';
+import {
+  User,
+  ConsitechUser,
+  Proposal,
+  Simulation,
+  Address,
+  PersonalData,
+  Contact,
+  BankData,
+} from '../models';
 import { ConsitechUrls } from '../constants/Consitech';
 import { BrbProposalData } from '../interfaces/BrbProposalData';
 import {
@@ -72,44 +81,52 @@ export class ConsitechService {
     if (!convertedAccount) throw new Error('Error converting account');
     if (!convertedCity) throw new Error('Error converting city');
 
+    const simulation: Simulation = new Simulation(
+      data.cpf,
+      data.contrato_parcela,
+      data.contrato_qtd_parcela.toString(),
+      data.contrato_saldo,
+      data.contrato_parcela_rest.toString(),
+      data.contrato_banco,
+      data.numeroDoContrato,
+      data.contrato_parcela
+    );
+
+    const personalData: PersonalData = new PersonalData(
+      data.nome,
+      MaritalStatus.SINGLE,
+      Sex.MALE,
+      data.dataDeNascimento,
+      convertedState,
+      convertedCity,
+      data.beneficio,
+      data.docNomeDaMae
+    );
+
+    const address: Address = new Address(
+      data.cep,
+      AddressType.RESIDENTIAL,
+      data.logradouro,
+      data.numero,
+      '',
+      data.bairro
+    );
+
+    const contact: Contact = new Contact(data.telefone_celular);
+
+    const bankData: BankData = new BankData(
+      data.info_banco,
+      data.info_agencia,
+      data.info_conta,
+      convertedAccount
+    );
+
     const brbProposalData: BrbProposalData = {
-      simulation: {
-        cpf: data.cpf,
-        installmentValue: this.formatNumbers(data.contrato_parcela),
-        outstandingBalance: this.formatNumbers(data.contrato_saldo),
-        portedBank: data.contrato_banco,
-        portedContract: data.numeroDoContrato,
-        portedInstallment: this.formatNumbers(data.contrato_parcela),
-        remainingInstallments: String(data.contrato_parcela_rest),
-        term: data.contrato_qtd_parcela.toString(),
-      },
-      personalData: {
-        birthDate: this.formatBirthDate(data.dataDeNascimento),
-        birthCity: convertedCity,
-        birthState: convertedState,
-        maritalStatus: MaritalStatus.SINGLE,
-        name: data.nome,
-        motherName: data.docNomeDaMae,
-        registration: this.convertRegistration(data.beneficio),
-        sex: Sex.MALE,
-      },
-      address: {
-        addressType: AddressType.RESIDENTIAL,
-        complement: '',
-        neighborhood: data.bairro,
-        number: data.numero,
-        street: data.logradouro,
-        zipCode: data.cep,
-      },
-      contact: {
-        phone: data.telefone_celular,
-      },
-      bankData: {
-        account: data.info_conta,
-        agency: data.info_agencia,
-        bank: data.info_banco,
-        accountType: convertedAccount,
-      },
+      simulation,
+      personalData,
+      address,
+      contact,
+      bankData,
     };
 
     return brbProposalData;
@@ -138,19 +155,5 @@ export class ConsitechService {
 
   private convertAccount(account: string): BankAccountType | null {
     return getBankAccountTypeFromAcronym(account);
-  }
-
-  private convertRegistration(registration: string): string {
-    return registration.split(' - ')[0];
-  }
-
-  private formatBirthDate(birthDate: string): string {
-    // convert from yyyy-mm-dd to ddmmyyyy
-    return birthDate.split('-').reverse().join('');
-  }
-
-  private formatNumbers(number: string): string {
-    // remove any special characters, leave just numbers
-    return number.replace(/\D/g, '');
   }
 }

@@ -1,4 +1,5 @@
 import { Term } from '../enums';
+import { filterNumbers } from '../utils';
 
 export class Simulation {
   cpf: string;
@@ -20,13 +21,13 @@ export class Simulation {
     portedContract: string,
     portedInstallment: string
   ) {
-    this.cpf = cpf;
-    this.installmentValue = installmentValue;
+    this.cpf = filterNumbers(cpf);
+    this.installmentValue = filterNumbers(installmentValue);
     this.term = term;
-    this.outstandingBalance = outstandingBalance;
+    this.outstandingBalance = filterNumbers(outstandingBalance);
     this.remainingInstallments = remainingInstallments;
     this.portedBank = portedBank;
     this.portedContract = portedContract;
-    this.portedInstallment = portedInstallment;
+    this.portedInstallment = filterNumbers(portedInstallment);
   }
 }
