@@ -5,3 +5,4 @@ export * from './Address';
 export * from './Contact';
 export * from './BankData';
 export * from './Proposal';
+export * from './ConsitechUser';

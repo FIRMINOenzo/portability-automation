@@ -53,7 +53,10 @@ export class FillAlcifForm extends Step {
     await this.bot.page.waitForSelector('.css-13cymwt-control');
     await this.bot.page.click('.css-13cymwt-control');
     await this.bot.page.waitForSelector('.css-19bb58m');
-    await this.utils.typeWithEffects('#react-select-3-input', 'Banco BS2 S.A.');
+    await this.utils.typeWithEffects(
+      '#react-select-3-input',
+      client.portedBank
+    );
     await waitRandomTime();
     await this.bot.page.keyboard.press('Enter');
     // Wait a certain amount of time and click out of the input
@@ -145,4 +148,6 @@ export class FillAlcifForm extends Step {
 
     await this.utils.clickButtonByText('Avançar');
   }
+
+  // private async fillInDocuments() {}
 }

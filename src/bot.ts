@@ -2,30 +2,28 @@ import { Page } from 'puppeteer';
 import { Step } from './step';
 import {
   FillAlcifForm,
-  DownloadCsvStep,
   LoginBrbStep,
-  LoginConsistechStep,
-  SearchProposal,
-  SendCsvStep,
+  LoginConsitechStep,
+  GetProposalData,
 } from './steps';
 import { BotData } from './interfaces/BotData';
+import { ConsitechService } from './services/consitech.service';
 
 export class Bot {
   data: BotData;
   page: Page;
+  consitechService: ConsitechService;
   steps: Step[] = [
-    // ajusta a ordem ai
-    new LoginConsistechStep(),
-    new SearchProposal(),
-    new DownloadCsvStep(),
+    new LoginConsitechStep(),
+    new GetProposalData(),
     new LoginBrbStep(),
     new FillAlcifForm(),
-    new SendCsvStep(),
   ];
 
-  constructor(page: Page, data: BotData) {
+  constructor(page: Page, data: BotData, consitechService: ConsitechService) {
     this.data = data;
     this.page = page;
+    this.consitechService = consitechService;
   }
 
   get _page() {

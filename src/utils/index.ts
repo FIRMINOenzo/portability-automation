@@ -1,2 +1,1 @@
-export * from './System';
-export * from './Csv';
+export * from './Text';
