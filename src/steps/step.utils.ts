@@ -69,7 +69,6 @@ export class StepUtils {
 
     if (exists) {
       await this.page.select(selector, value);
-      // console.log(`Selecionada a opção '${value}' em '${selector}'`);
     } else {
       throw new Error(`Opção '${value}' não encontrada em '${selector}'`);
     }
