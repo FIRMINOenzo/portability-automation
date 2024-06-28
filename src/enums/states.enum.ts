@@ -27,3 +27,37 @@ export enum State {
   SERGIPE = 'SE',
   TOCANTINS = 'TO',
 }
+
+const stateMapping = {
+  1: State.ACRE,
+  2: State.ALAGOAS,
+  3: State.AMAPA,
+  4: State.AMAZONAS,
+  5: State.BAHIA,
+  6: State.CEARA,
+  7: State.DISTRITO_FEDERAL,
+  8: State.ESPIRITO_SANTO,
+  9: State.GOIAS,
+  10: State.MARANHAO,
+  11: State.MATO_GROSSO,
+  12: State.MATO_GROSSO_DO_SUL,
+  13: State.MINAS_GERAIS,
+  14: State.PARA,
+  15: State.PARAIBA,
+  16: State.PARANA,
+  17: State.PERNAMBUCO,
+  18: State.PIAUI,
+  19: State.RIO_DE_JANEIRO,
+  20: State.RIO_GRANDE_DO_NORTE,
+  21: State.RIO_GRANDE_DO_SUL,
+  22: State.RONDONIA,
+  23: State.RORAIMA,
+  24: State.SANTA_CATARINA,
+  25: State.SAO_PAULO,
+  26: State.SERGIPE,
+  27: State.TOCANTINS,
+};
+
+export function getStateFromId(id: number): State | null {
+  return stateMapping[id as keyof typeof stateMapping] ?? null;
+}
