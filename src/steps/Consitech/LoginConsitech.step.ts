@@ -9,7 +9,9 @@ export class LoginConsitechStep extends Step {
       password: botData.consitechUser.password,
     };
 
-    // const response = await this.consitechService.login(user);
+    const updatedConsitechUser = await this.bot.consitechService.login(user);
+
+    botData.consitechUser = updatedConsitechUser;
 
     return botData;
   }

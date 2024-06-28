@@ -35,84 +35,6 @@ export class ConsitechService {
     return new ConsitechUser(user.email, user.password, response.data.token);
   }
 
-  // async getProposalData(
-  //   proposal: Proposal,
-  //   token: string
-  // ): Promise<BrbProposalData> {
-  //   try {
-  //     const response = await axios.post(
-  //       `${ConsitechUrls.BASE}/propostas/getOne`,
-  //       proposal,
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${token}`,
-  //         },
-  //       }
-  //     );
-
-  //     const data = await response.data;
-  //     const convertedState = await this.convertState(data.uf);
-  //     const convertedAccount = await this.convertAccount(data.info_tipo_conta);
-  //     const convertedRegistration = await this.convertRegistration(
-  //       data.info_matricula
-  //     );
-  //     const convertedCity = await this.convertCity(
-  //       {
-  //         stateId: data.uf,
-  //         cityId: data.cidade,
-  //       },
-  //       token
-  //     );
-
-  //     if (!convertedState) throw new Error('Error converting state');
-  //     if (!convertedAccount) throw new Error('Error converting account');
-  //     if (!convertedCity) throw new Error('Error converting city');
-
-  //     const brbProposalData: BrbProposalData = {
-  //       simulation: {
-  //         cpf: data.cpf,
-  //         installmentValue: data.contrato_parcela,
-  //         outstandingBalance: data.contrato_saldo,
-  //         portedBank: data.contrato_banco,
-  //         portedContract: data.numeroDoContrato,
-  //         portedInstallment: data.contrato_parcela,
-  //         remainingInstallments: data.contrato_parcela_rest,
-  //         term: data.contrato_qtd_parcela,
-  //       },
-  //       personalData: {
-  //         birthDate: '',
-  //         birthCity: convertedCity,
-  //         birthState: convertedState,
-  //         maritalStatus: MaritalStatus.SINGLE,
-  //         name: data.nome,
-  //         motherName: data.docNomeDaMae,
-  //         registration: convertedRegistration,
-  //         sex: Sex.MALE,
-  //       },
-  //       address: {
-  //         addressType: AddressType.RESIDENTIAL,
-  //         complement: '',
-  //         neighborhood: data.bairro,
-  //         number: data.numero,
-  //         street: data.logradouro,
-  //         zipCode: data.cep,
-  //       },
-  //       contact: {
-  //         phone: data.telefone_celular,
-  //       },
-  //       bankData: {
-  //         account: data.info_conta,
-  //         agency: data.info_agencia,
-  //         bank: data.info_banco,
-  //         accountType: convertedAccount,
-  //       },
-  //     };
-  //     return brbProposalData;
-  //   } catch (error) {
-  //     throw new Error('Error getting proposal data');
-  //   }
-  // }
-
   async getProposalData(
     proposal: Proposal,
     token: string
@@ -121,11 +43,7 @@ export class ConsitechService {
       const response = await axios.post(
         `${ConsitechUrls.BASE}/propostas/getOne`,
         proposal,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        { headers: { Authorization: `Bearer ${token}` } }
       );
 
       if (!response.data) {
@@ -143,11 +61,8 @@ export class ConsitechService {
     data: any,
     token: string
   ): Promise<BrbProposalData> {
-    const convertedState = await this.convertState(data.uf);
-    const convertedAccount = await this.convertAccount(data.info_tipo_conta);
-    const convertedRegistration = await this.convertRegistration(
-      data.info_matricula
-    );
+    const convertedState = this.convertState(data.uf);
+    const convertedAccount = this.convertAccount(data.info_tipo_conta);
     const convertedCity = await this.convertCity(
       { stateId: data.uf, cityId: data.cidade },
       token
@@ -160,22 +75,22 @@ export class ConsitechService {
     const brbProposalData: BrbProposalData = {
       simulation: {
         cpf: data.cpf,
-        installmentValue: data.contrato_parcela,
-        outstandingBalance: data.contrato_saldo,
+        installmentValue: this.formatNumbers(data.contrato_parcela),
+        outstandingBalance: this.formatNumbers(data.contrato_saldo),
         portedBank: data.contrato_banco,
         portedContract: data.numeroDoContrato,
-        portedInstallment: data.contrato_parcela,
-        remainingInstallments: data.contrato_parcela_rest,
-        term: data.contrato_qtd_parcela,
+        portedInstallment: this.formatNumbers(data.contrato_parcela),
+        remainingInstallments: String(data.contrato_parcela_rest),
+        term: data.contrato_qtd_parcela.toString(),
       },
       personalData: {
-        birthDate: '',
+        birthDate: this.formatBirthDate(data.dataDeNascimento),
         birthCity: convertedCity,
         birthState: convertedState,
         maritalStatus: MaritalStatus.SINGLE,
         name: data.nome,
         motherName: data.docNomeDaMae,
-        registration: convertedRegistration,
+        registration: this.convertRegistration(data.beneficio),
         sex: Sex.MALE,
       },
       address: {
@@ -200,7 +115,7 @@ export class ConsitechService {
     return brbProposalData;
   }
 
-  private async convertState(stateId: number): Promise<State | null> {
+  private convertState(stateId: number): State | null {
     return getStateFromId(stateId);
   }
 
@@ -210,14 +125,8 @@ export class ConsitechService {
   ): Promise<string | null> {
     const response = await axios.post(
       `${ConsitechUrls.BASE}/cep/getCidades`,
-      {
-        estado: citySearch.stateId,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
+      { estado: citySearch.stateId },
+      { headers: { Authorization: `Bearer ${token}` } }
     );
 
     const desiredCity: City | undefined = response.data.find(
@@ -227,13 +136,21 @@ export class ConsitechService {
     return desiredCity?.nome ?? null;
   }
 
-  private async convertAccount(
-    account: string
-  ): Promise<BankAccountType | null> {
+  private convertAccount(account: string): BankAccountType | null {
     return getBankAccountTypeFromAcronym(account);
   }
 
-  private async convertRegistration(registration: string): Promise<string> {
+  private convertRegistration(registration: string): string {
     return registration.split(' - ')[0];
+  }
+
+  private formatBirthDate(birthDate: string): string {
+    // convert from yyyy-mm-dd to ddmmyyyy
+    return birthDate.split('-').reverse().join('');
+  }
+
+  private formatNumbers(number: string): string {
+    // remove any special characters, leave just numbers
+    return number.replace(/\D/g, '');
   }
 }

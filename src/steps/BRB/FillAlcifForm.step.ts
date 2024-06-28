@@ -29,25 +29,32 @@ export class FillAlcifForm extends Step {
     });
 
     await this.utils.typeWithEffects('#cpf', client.cpf);
+    console.log('CPF digitado');
     await this.utils.typeWithEffects('#valor_parcela', client.installmentValue);
+    console.log('Valor da parcela digitado');
     await this.utils.typeWithEffects(
       '#saldo_devedor',
       client.outstandingBalance
     );
+    console.log('Saldo devedor digitado');
     await this.utils.typeWithEffects(
       '#contrato_portado',
       client.portedContract
     );
+    console.log('Contrato portado digitado');
     await this.utils.typeWithEffects(
       '#parcela_portada',
       client.portedInstallment
     );
+    console.log('Parcela portada digitada');
     await this.utils.typeWithEffects(
       '#parcelas_total',
       client.remainingInstallments
     );
+    console.log('Parcelas totais digitadas');
 
     await this.utils.selectOption('#convenio_id', '28'); // INSS code
+    console.log('Convênio selecionado');
 
     // Ported bank selection
     await this.bot.page.waitForSelector('.css-13cymwt-control');
@@ -62,8 +69,10 @@ export class FillAlcifForm extends Step {
       const body = document.querySelector('body');
       body?.click();
     });
+    console.log('Banco portado selecionado');
 
     await this.utils.selectOption('#prazo', client.term);
+    console.log('Prazo selecionado');
     await this.utils.clickButtonByText('Avançar');
   }
 

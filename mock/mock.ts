@@ -28,40 +28,19 @@ export const mockRun: BotData = {
   ),
   proposal: new Proposal('139557'),
   brbProposalData: {
-    address: new Address(
-      '04020-030',
-      AddressType.RESIDENTIAL,
-      'Rua Euclides Bahiano',
-      '337',
-      '',
-      'Centro'
-    ),
-    simulation: new Simulation(
-      '68969555897',
-      '1000',
-      Term.TWELVE,
-      '10000',
-      '10',
-      '123',
-      '123',
-      '7232'
-    ),
-    bankData: new BankData(
-      '104',
-      '123456',
-      '123456123456',
-      BankAccountType.CURRENT
-    ),
-    contact: new Contact('11999999999'),
+    address: new Address('', AddressType.RESIDENTIAL, '', '', '', ''),
+    simulation: new Simulation('', '', Term.TWELVE, '', '', '', '', ''),
+    bankData: new BankData('', '', '', BankAccountType.CURRENT),
+    contact: new Contact(''),
     personalData: new PersonalData(
-      'Jonas Abreu da Silva',
+      '',
       MaritalStatus.SINGLE,
       Sex.MALE,
-      '01/01/1990',
+      '',
       State.SAO_PAULO,
-      'Bragança Paulista',
-      '123456789',
-      'Maria Abreu da Silva'
+      '',
+      '',
+      ''
     ),
   },
 };
