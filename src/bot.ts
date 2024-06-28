@@ -34,9 +34,6 @@ export class Bot {
     for (const step of this.steps) {
       step.init(this);
       await step.execute(this.data);
-      console.log('--- Bot data ---');
-      console.log(this.data);
-      console.log('----------------');
     }
   }
 }

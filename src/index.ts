@@ -17,7 +17,6 @@ async function run() {
   try {
     await bot.run();
   } catch (error) {
-    console.log(error);
     throw new Error('erro');
   }
 }
