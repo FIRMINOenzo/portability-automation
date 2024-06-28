@@ -108,7 +108,7 @@ export class ConsitechService {
       AddressType.RESIDENTIAL,
       data.logradouro,
       data.numero,
-      '',
+      data.ponto_de_ref,
       data.bairro
     );
 
