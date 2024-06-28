@@ -1,4 +1,5 @@
 import { MaritalStatus, Sex, State } from '../enums';
+import { filterNumbers, removeAccents } from '../utils';
 
 export class PersonalData {
   name: string;
@@ -20,21 +21,13 @@ export class PersonalData {
     registration: string,
     motherName: string
   ) {
-    this.name = name;
+    this.name = removeAccents(name);
     this.maritalStatus = maritalStatus;
     this.sex = sex;
-    this.birthDate = PersonalData.formatBirthDate(birthDate);
+    this.birthDate = filterNumbers(birthDate);
     this.birthState = birthState;
-    this.birthCity = birthCity;
+    this.birthCity = removeAccents(birthCity);
     this.registration = registration;
-    this.motherName = motherName;
-  }
-
-  private static formatBirthDate(birthDate: string): string {
-    return birthDate.replace(/\D/g, '').substring(0, 8);
-  }
-
-  private static formatGrossIncome(grossIncome: string): string {
-    return grossIncome.replace(/\D/g, '');
+    this.motherName = removeAccents(motherName);
   }
 }
