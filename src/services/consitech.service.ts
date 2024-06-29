@@ -61,8 +61,7 @@ export class ConsitechService {
 
       return this.convertDataToBrbProposalData(response.data, token);
     } catch (error) {
-      console.error('Error getting proposal data:', error);
-      throw error;
+      throw new Error('Erro ao buscar dados da proposta.');
     }
   }
 
@@ -81,55 +80,59 @@ export class ConsitechService {
     if (!convertedAccount) throw new Error('Error converting account');
     if (!convertedCity) throw new Error('Error converting city');
 
-    const simulation: Simulation = new Simulation(
-      data.cpf,
-      data.contrato_parcela,
-      data.contrato_qtd_parcela.toString(),
-      data.contrato_saldo,
-      data.contrato_parcela_rest.toString(),
-      data.contrato_banco,
-      data.numeroDoContrato,
-      data.contrato_parcela
-    );
+    try {
+      const simulation: Simulation = new Simulation(
+        data.cpf ?? '',
+        data.contrato_parcela ?? '',
+        data.contrato_qtd_parcela.toString() ?? '',
+        data.contrato_saldo ?? '',
+        data.contrato_parcela_rest.toString() ?? '',
+        data.contrato_banco ?? '',
+        data.numeroDoContrato ?? '',
+        data.contrato_parcela ?? ''
+      );
 
-    const personalData: PersonalData = new PersonalData(
-      data.nome,
-      MaritalStatus.SINGLE,
-      Sex.MALE,
-      data.dataDeNascimento,
-      convertedState,
-      convertedCity,
-      data.beneficio,
-      data.docNomeDaMae
-    );
+      const personalData: PersonalData = new PersonalData(
+        data.nome ?? '',
+        MaritalStatus.SINGLE,
+        Sex.MALE,
+        data.dataDeNascimento ?? '',
+        convertedState ?? '',
+        convertedCity ?? '',
+        data.beneficio ?? '',
+        data.docNomeDaMae ?? ''
+      );
 
-    const address: Address = new Address(
-      data.cep,
-      AddressType.RESIDENTIAL,
-      data.logradouro,
-      data.numero,
-      data.ponto_de_ref,
-      data.bairro
-    );
+      const address: Address = new Address(
+        data.cep ?? '',
+        AddressType.RESIDENTIAL,
+        data.logradouro ?? '',
+        data.numero ?? '',
+        data.ponto_de_ref ?? '',
+        data.bairro ?? ''
+      );
 
-    const contact: Contact = new Contact(data.telefone_celular);
+      const contact: Contact = new Contact(data.telefone_celular ?? '');
 
-    const bankData: BankData = new BankData(
-      data.info_banco,
-      data.info_agencia,
-      data.info_conta,
-      convertedAccount
-    );
+      const bankData: BankData = new BankData(
+        data.info_banco ?? '',
+        data.info_agencia ?? '',
+        data.info_conta ?? '',
+        convertedAccount ?? ''
+      );
 
-    const brbProposalData: BrbProposalData = {
-      simulation,
-      personalData,
-      address,
-      contact,
-      bankData,
-    };
+      const brbProposalData: BrbProposalData = {
+        simulation,
+        personalData,
+        address,
+        contact,
+        bankData,
+      };
 
-    return brbProposalData;
+      return brbProposalData;
+    } catch (error) {
+      throw new Error('Erro ao converter dados da proposta.');
+    }
   }
 
   private convertState(stateId: number): State | null {
