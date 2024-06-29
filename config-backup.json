@@ -1,0 +1,12 @@
+{
+  "user": {
+    "brb": {
+      "email": "seu_email_brb",
+      "password": "sua_senha_brb"
+    },
+    "consitech": {
+      "email": "seu_email_consitech",
+      "password": "sua_senha_consitech"
+    }
+  }
+}
