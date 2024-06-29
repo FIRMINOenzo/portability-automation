@@ -26,7 +26,7 @@ export const mockRun: BotData = {
     env.user.consitech.password ?? '',
     ''
   ),
-  proposal: new Proposal('139557'),
+  proposal: new Proposal(''),
   brbProposalData: {
     address: new Address('', AddressType.RESIDENTIAL, '', '', '', ''),
     simulation: new Simulation('', '', Term.TWELVE, '', '', '', '', ''),
